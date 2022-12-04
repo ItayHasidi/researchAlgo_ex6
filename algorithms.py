@@ -11,32 +11,33 @@ import operator
 valuations = {"Alice": {"w": 11, "x": 22, "y": 44, "z": 0}, "George": {"w": 22, "x": 11, "y": 66, "z": 33}}
 
 
-def h_m_l(u: list, pref: list, h: dict, l: int):
+def h_m_l(u: list, h: list, l: int):
     """
     Returns all the desired items until a rank of l for a given valuations list of a player.
     """
     out_h = []
-    if l < len(pref):
+    if l < len(h):
         for i in range(l):
             # print(h[i][0])
-            if pref[i] in u:
-                out_h.append(pref[i])
+            if h[i] in u:
+                out_h.append(h[i])
     return out_h
 
 
-def allocate(u: list, z: dict, h: dict, i: any, j: any):
+def allocate(u_copy: list, z_copy: dict, i: any, j: any):
     """
     Allocates i to player A and j to player B. removing items i and j from all available lists.
     """
     # print(h['a'][i])
-    h['a'].pop(h['a'].index(i))
-    h['a'].pop(h['a'].index(j))
-    h['b'].pop(h['b'].index(i))
-    h['b'].pop(h['b'].index(j))
-    z['a'].append(i)
-    z['b'].append(j)
-    u.pop(u.index(i))
-    u.pop(u.index(j))
+    # h['a'].pop(h['a'].index(i))
+    # h['a'].pop(h['a'].index(j))
+    # h['b'].pop(h['b'].index(i))
+    # h['b'].pop(h['b'].index(j))
+    z_copy['a'].append(i)
+    z_copy['b'].append(j)
+    u_copy.pop(u_copy.index(i))
+    u_copy.pop(u_copy.index(j))
+    return u_copy, z_copy
 
 
 """
@@ -46,7 +47,7 @@ TR: A: a c, B: b d
 """
 
 
-def sequential(u: list, z: dict, pref: list, h: dict, l: int = 1):
+def sequential(u: list, z: dict, h: dict, l: int = 1):
     """
     a.k.a OS
     the algorithm receives:
@@ -63,23 +64,30 @@ def sequential(u: list, z: dict, pref: list, h: dict, l: int = 1):
         return z
     # print(h.get('a'))
 
-    h_a = h_m_l(u, pref['a'], h['a'], l)
-    h_b = h_m_l(u, pref['b'], h['b'], l)
+    h_a = h_m_l(u, h['a'], l)
+    h_b = h_m_l(u, h['b'], l)
     if h_a != h_b or (len(h_a) > 1 and len(h_b) > 1):
         for i in h_a:
             for j in h_b:
                 if i != j:
-                    allocate(u, z, h, i, j)
+                    old_z = {'a': [], 'b': []}
+                    for player in z:
+                        for item in z[player]:
+                            old_z[player].append(item)
+                    # old_z.clear()
+                    new_u, new_z = allocate(u.copy(), old_z, i, j)
                     l += 1
-                    sequential(u, z, pref, h, l)
+                    sequential(new_u, new_z, h, l)
+                    # u = new_u
+                    # z = new_z
     else:
         l += 1
-        sequential(u, z, pref, h, l)
+        sequential(u, z, h, l)
 
     # pass
 
 
-def restricted_simple(u: list, z: dict, pref: list, h: dict, l: int = 0):
+def restricted_simple(u: list, z: dict, h: dict, l: int = 1):
     """
     a.k.a RS
     the algorithm receives:
@@ -91,25 +99,37 @@ def restricted_simple(u: list, z: dict, pref: list, h: dict, l: int = 0):
     if not u:
         print(z)
         return z
-    h_a = h_m_l(h[0])
-    h_b = h_m_l(h[1])
-    if h_a != h_b:
+    h_a = h_m_l(u, h['a'], l)
+    h_b = h_m_l(u, h['b'], l)
+    if h_a != h_b or (len(h_a) > 1 and len(h_b) > 1):
         if h_a[0] != h_b[0]:
-            allocate(u, z, h, h_a[0], h_b[0])
+            old_z = {'a': [], 'b': []}
+            for player in z:
+                for item in z[player]:
+                    old_z[player].append(item)
+            new_u, new_z, = allocate(u.copy(), old_z, h_a[0], h_b[0])
             l += 1
-            restricted_simple(u, z, pref, h, l)
+            restricted_simple(new_u, new_z, h, l)
         else:
             if len(h_a) > 1:
-                allocate(u, z, h, h_a[1], h_b[0])
+                old_z = {'a': [], 'b': []}
+                for player in z:
+                    for item in z[player]:
+                        old_z[player].append(item)
+                new_u, new_z, = allocate(u.copy(), old_z, h_a[1], h_b[0])
                 l += 1
-                restricted_simple(u, z, pref, h, l)
+                restricted_simple(new_u, new_z, h, l)
             if len(h_b) > 1:
-                allocate(u, z, h, h_a[0], h_b[1])
+                old_z = {'a': [], 'b': []}
+                for player in z:
+                    for item in z[player]:
+                        old_z[player].append(item)
+                new_u, new_z, = allocate(u.copy(), old_z, h_a[0], h_b[1])
                 l += 1
-                restricted_simple(u, z, pref, h, l)
+                restricted_simple(new_u, new_z, h, l)
     else:
         l += 1
-        restricted_simple(u, z, pref, h, l)
+        restricted_simple(u, z, h, l)
     # pass
 
 
@@ -214,6 +234,6 @@ if __name__ == '__main__':
     h['a'] = h_a
     h['b'] = h_b
     print("OS:")
-    sequential(u, z, pref, h)
+    sequential(u, z, h)
     print("RS:")
-    restricted_simple(u, z, pref, h)
+    restricted_simple(u, z, h)
