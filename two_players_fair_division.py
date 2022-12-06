@@ -6,7 +6,7 @@ programmers: Itay Hasidi & Amichai Bitan
 """
 from typing import List, Any, Dict
 from fairpy.fairpy.agentlist import AgentList
-from utils_two_players_fair_division import *
+# from utils_two_players_fair_division import *
 
 
 def sequential(agents: AgentList, items: List[Any] = None) -> Dict:
