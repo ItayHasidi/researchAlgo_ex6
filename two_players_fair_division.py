@@ -17,17 +17,21 @@ def sequential(agents: AgentList, items: List[Any] = None) -> Dict:
         z - partial allocation for player a and b.
         h - valuations given to items by player a and b.
         l - the maximum rank of items currently considered for allocation
-
+    # test 1 :
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(sequential([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
     {'a': ['computer', 'tv'], 'b': ['book', 'phone']}
 
-    >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
-    >>> u = ['computer', 'phone', 'tv', 'book']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(sequential(u, z, h, to_sort=True))
+    # test 2 :
+    # >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
+    # >>> u = ['computer', 'phone', 'tv', 'book']
+    # >>> z: dict = {'a': [], 'b': []}
+    # # >>> print(sequential(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'George')
+    >>> print(sequential([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
     {'a': ['computer', 'book'], 'b': ['phone', 'tv']}
     {'a': ['tv', 'phone'], 'b': ['computer', 'book']}
@@ -69,17 +73,23 @@ def restricted_simple(agents: AgentList, items: List[Any] = None) -> Dict:
         z - partial allocation for player a and b.
         h - valuations given to items by player a and b.
         l - the maximum rank of items currently considered for allocation
-
+    # test1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(restricted_simple([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'tv'], 'b': ['book', 'phone']}
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
 
-    >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
-    >>> u = ['computer', 'phone', 'tv', 'book']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(restricted_simple(u, z, h, to_sort=True))
+    # rest 2:
+    # >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
+    # >>> u = ['computer', 'phone', 'tv', 'book']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(restricted_simple(u, z, h, to_sort=True))
+
+    >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'George')
+    >>> print(restricted_simple([Alice, George], ['computer', 'phone', 'tv', 'book']))
+
     {'a': ['tv', 'phone'], 'b': ['computer', 'book']}
     {'a': ['phone', 'book'], 'b': ['computer', 'tv']}
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
@@ -132,23 +142,32 @@ def singles_doubles(agents: AgentList, items: List[Any] = None) -> Dict:
         z_a - partial allocation for player a.
         z_b - partial allocation for player b.
         u - all un-allocated objects.
-
+    # test 1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(singles_doubles([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
     {'a': ['computer', 'tv'], 'b': ['book', 'phone']}
+    # test 2:
+    # >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, 'b': {'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}}
+    # >>> u = ['a', 'b', 'c', 'd', 'e', 'f']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(singles_doubles(u, z, h, to_sort=True))
 
-    >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, 'b': {'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}}
-    >>> u = ['a', 'b', 'c', 'd', 'e', 'f']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(singles_doubles(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}, name = 'George')
+    >>> print(singles_doubles([Alice, George], ['a', 'b', 'c', 'd', 'e', 'f']))
     {'a': ['a', 'b', 'e], 'b': ['c', 'd', 'f']}
 
-    >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4}, 'b': {'a': 1, 'b': 2, 'c': 3, 'd': 4}}
-    >>> u = ['a', 'b', 'c', 'd']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(singles_doubles(u, z, h, to_sort=True))
+    # test 3:
+
+    # >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4}, 'b': {'a': 1, 'b': 2, 'c': 3, 'd': 4}}
+    # >>> u = ['a', 'b', 'c', 'd']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(singles_doubles(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4}, name = 'George')
+    >>> print(singles_doubles([Alice, George], ['a', 'b', 'c', 'd']))
     {'a': [], 'b': []}
     """
     pass
@@ -161,23 +180,31 @@ def iterated_singles_doubles(agents: AgentList, items: List[Any] = None) -> Dict
         z_a - partial allocation for player a.
         z_b - partial allocation for player b.
         u - all un-allocated objects.
-
+    # test 1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(iterated_singles_doubles([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
     {'a': ['computer', 'tv'], 'b': ['book', 'phone']}
 
-    >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, 'b': {'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}}
-    >>> u = ['a', 'b', 'c', 'd', 'e', 'f']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(iterated_singles_doubles(u, z, h, to_sort=True))
+    # rest2 :
+    # >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, 'b': {'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}}
+    # >>> u = ['a', 'b', 'c', 'd', 'e', 'f']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(iterated_singles_doubles(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}, name = 'George')
+    >>> print(iterated_singles_doubles([Alice, George], ['a', 'b', 'c', 'd', 'e', 'f']))
     {'a': ['a', 'b', 'e], 'b': ['c', 'd', 'f']}
 
-    >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4}, 'b': {'a': 1, 'b': 2, 'c': 3, 'd': 4}}
-    >>> u = ['a', 'b', 'c', 'd']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(iterated_singles_doubles(u, z, h, to_sort=True))
+    # test 3:
+    # >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4}, 'b': {'a': 1, 'b': 2, 'c': 3, 'd': 4}}
+    # >>> u = ['a', 'b', 'c', 'd']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(iterated_singles_doubles(u, z, h, to_sort=True))
+     >>> Alice = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4}, name = 'George')
+    >>> print(iterated_singles_doubles([Alice, George], ['a', 'b', 'c', 'd']))
     {'a': [], 'b': []}
     """
     pass
@@ -189,23 +216,33 @@ def s1(agents: AgentList, items: List[Any] = None) -> Dict:
         z_a - partial allocation for player a.
         z_b - partial allocation for player b.
         u - all un-allocated objects.
-
+    # test1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(s1([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
     {'a': ['computer', 'tv'], 'b': ['book', 'phone']}
 
-    >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, 'b': {'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}}
-    >>> u = ['a', 'b', 'c', 'd', 'e', 'f']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(s1(u, z, h, to_sort=True))
+    # test2:
+
+    # >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, 'b': {'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}}
+    # >>> u = ['a', 'b', 'c', 'd', 'e', 'f']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(s1(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}, name = 'George')
+    >>> print(s1([Alice, George], ['a', 'b', 'c', 'd', 'e', 'f']))
     {'a': ['a', 'b', 'e], 'b': ['c', 'd', 'f']}
 
-    >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4}, 'b': {'a': 1, 'b': 2, 'c': 3, 'd': 4}}
-    >>> u = ['a', 'b', 'c', 'd']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(s1(u, z, h, to_sort=True))
+    # test 3:
+
+    # >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4}, 'b': {'a': 1, 'b': 2, 'c': 3, 'd': 4}}
+    # >>> u = ['a', 'b', 'c', 'd']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(s1(u, z, h, to_sort=True)
+    >>> Alice = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4}, name = 'George')
+    >>> print(s1([Alice, George], ['a', 'b', 'c', 'd']))
     {'a': ['b', 'd'], 'b': ['a', 'c']}
     """
     pass
@@ -217,23 +254,31 @@ def l1(agents: AgentList, items: List[Any] = None) -> Dict:
         z_a - partial allocation for player a.
         z_b - partial allocation for player b.
         u - all un-allocated objects.
-
+    # test1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(l1([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
     {'a': ['computer', 'tv'], 'b': ['book', 'phone']}
 
-    >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, 'b': {'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}}
-    >>> u = ['a', 'b', 'c', 'd', 'e', 'f']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(l1(u, z, h, to_sort=True))
+    # test2:
+    # >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, 'b': {'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}}
+    # >>> u = ['a', 'b', 'c', 'd', 'e', 'f']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(l1(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'a': 2, 'b': 4, 'c': 1, 'd': 3, 'e': 6, 'f': 5}, name = 'George')
+    >>> print(l1([Alice, George], ['a', 'b', 'c', 'd', 'e', 'f']))
     {'a': ['a', 'b', 'e], 'b': ['c', 'd', 'f']}
 
-    >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4}, 'b': {'a': 1, 'b': 2, 'c': 3, 'd': 4}}
-    >>> u = ['a', 'b', 'c', 'd']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(l1(u, z, h, to_sort=True))
+    # test3:
+    # >>> h = {'a': {'a': 1, 'b': 2, 'c': 3, 'd': 4}, 'b': {'a': 1, 'b': 2, 'c': 3, 'd': 4}}
+    # >>> u = ['a', 'b', 'c', 'd']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(l1(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'a': 1, 'b': 2, 'c': 3, 'd': 4}, name = 'George')
+    >>> print(l1([Alice, George], ['a', 'b', 'c', 'd']))
     {'a': ['b', 'd'], 'b': ['a', 'c']}
     """
     pass
@@ -244,15 +289,20 @@ def top_down(agents: AgentList, items: List[Any] = None) -> Dict:
     a.k.a TD
     u - all un-allocated objects.
 
+    # test1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(top_down([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
 
-    >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
-    >>> u = ['computer', 'phone', 'tv', 'book']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(top_down(u, z, h, to_sort=True))
+    # test2:
+    # >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
+    # >>> u = ['computer', 'phone', 'tv', 'book']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(top_down(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'George')
+    >>> print(top_down([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'tv'], 'b': ['phone', 'book']}
     """
     pass
@@ -262,16 +312,21 @@ def top_down_alternating(agents: AgentList, items: List[Any] = None) -> Dict:
     """
     a.k.a TA
     u - all un-allocated objects.
-
+    # test1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(top_down_alternating([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'book'], 'b': ['phone', 'tv']}
 
-    >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
-    >>> u = ['computer', 'phone', 'tv', 'book']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(top_down_alternating(u, z, h, to_sort=True))
+    # test2:
+
+    # >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
+    # >>> u = ['computer', 'phone', 'tv', 'book']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(top_down_alternating(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'George')
+    >>> print(top_down([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'book'], 'b': ['phone', 'tv']}
     """
     pass
@@ -282,15 +337,20 @@ def bottom_up(agents: AgentList, items: List[Any] = None) -> Dict:
     a.k.a BU
     u - all un-allocated objects.
 
+    # test1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(bottom_up([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'phone'], 'b': ['book', 'tv']}
 
-    >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
-    >>> u = ['computer', 'phone', 'tv', 'book']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(bottom_up(u, z, h, to_sort=True))
+    # test2:
+    # >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
+    # >>> u = ['computer', 'phone', 'tv', 'book']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(bottom_up(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'George')
+    >>> print(top_down([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['tv', 'computer'], 'b': ['phone', 'tv']}
     """
     pass
@@ -301,15 +361,20 @@ def bottom_up_alternating(agents: AgentList, items: List[Any] = None) -> Dict:
     a.k.a BA
     u - all un-allocated objects.
 
+    # test1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(bottom_up_alternating([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'tv'], 'b': ['book', 'phone']}
 
-    >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
-    >>> u = ['computer', 'phone', 'tv', 'book']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(bottom_up_alternating(u, z, h, to_sort=True))
+    # test 2:
+    # >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
+    # >>> u = ['computer', 'phone', 'tv', 'book']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(bottom_up_alternating(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'George')
+    >>> print(top_down([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['tv', 'phone'], 'b': ['book', 'computer']}
     """
     pass
@@ -320,15 +385,20 @@ def trump(agents: AgentList, items: List[Any] = None) -> Dict:
     a.k.a TR
     u - all un-allocated objects.
 
+    # test1:
     >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'Alice')
     >>> George = fairpy.agents.AdditiveAgent({'computer': 4, 'phone': 2, 'tv': 3, 'book': 1}, name = 'George')
     >>> print(trump([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': ['computer', 'tv'], 'b': ['book', 'phone']}
 
-    >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
-    >>> u = ['computer', 'phone', 'tv', 'book']
-    >>> z: dict = {'a': [], 'b': []}
-    >>> print(trump(u, z, h, to_sort=True))
+    # test2:
+    # >>> h = {'a': {'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, 'b': {'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}}
+    # >>> u = ['computer', 'phone', 'tv', 'book']
+    # >>> z: dict = {'a': [], 'b': []}
+    # >>> print(trump(u, z, h, to_sort=True))
+    >>> Alice = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 3, 'tv': 2, 'book': 4}, name = 'Alice')
+    >>> George = fairpy.agents.AdditiveAgent({'computer': 1, 'phone': 2, 'tv': 3, 'book': 4}, name = 'George')
+    >>> print(top_down([Alice, George], ['computer', 'phone', 'tv', 'book']))
     {'a': [], 'b': []}
     """
     pass
